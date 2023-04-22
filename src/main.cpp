@@ -20,8 +20,8 @@
 #define motorB_IN1 26
 #define motorB_IN2 25
 #define motorC_EN 15
-#define motorC_IN1 2
-#define motorC_IN2 4
+#define motorC_IN1 4
+#define motorC_IN2 5
 #define motorD_EN 18
 #define motorD_IN1 19
 #define motorD_IN2 21
@@ -65,6 +65,11 @@ void setup() {
 
 void loop() {
   if (PS4.isConnected()) {
+
+    digitalWrite(LED, HIGH);
+
+    PS4.setLed(0, 255, 0);
+    PS4.sendToController();
 
     // Posições das rodas:
     //[D]-------[B]
@@ -135,5 +140,12 @@ void loop() {
     Serial.print("Motor D speed: ");
     Serial.println(motorDSpeed);
 
-  } else {Serial.println("Controle desconectado!");}
+  } else {
+    Serial.println("Controle desconectado!");
+    digitalWrite(LED, LOW);
+    analogWrite(motorA_EN, 0);
+    analogWrite(motorB_EN, 0);
+    analogWrite(motorC_EN, 0);
+    analogWrite(motorD_EN, 0);
+  }
 }
