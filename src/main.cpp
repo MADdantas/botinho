@@ -1,6 +1,14 @@
 #include <Arduino.h>
 #include <PS4Controller.h>
 
+// Posições das rodas:
+
+//[D]-------[B]
+//  |       |
+//  |   ⇧   |
+//  |       |
+//[C]-------[A]
+
 // LED pin
 #define LED 2
 
@@ -57,11 +65,13 @@ void setup() {
 
 void loop() {
   if (PS4.isConnected()) {
-    // Serial.println("Controle commands:");
-    // Serial.println(PS4.RStickX()); // -127 -> 127
-    // Serial.println(PS4.LStickX()); // -127 -> 127
-    // Serial.println(PS4.LStickY()); // -127 -> 127
-    // Serial.println("==================");
+
+    // Posições das rodas:
+    //[D]-------[B]
+    //  |       |
+    //  |   ⇧   |
+    //  |       |
+    //[C]-------[A]
 
     // Velocity input
     int Vx = map(PS4.LStickY(), -128, 128, -100, 100);
@@ -75,10 +85,10 @@ void loop() {
     // int wD = (1/0.04)*(Vx - Vy - ((0.12+0.11)/2) * W);
 
     // Wheel velocity for each wheel
-    int wA = (Vx - Vy + W);
-    int wB = (Vx + Vy + W);
-    int wC = (Vx + Vy - W);
-    int wD = (Vx - Vy - W);
+    int wA = (Vx + Vy - W);
+    int wB = (Vx - Vy - W);
+    int wC = (Vx - Vy + W);
+    int wD = (Vx + Vy + W);
 
     // Definir a velocidade dos motores
     int dz = 12; // Valor da dead zone do analógico
@@ -124,21 +134,6 @@ void loop() {
     Serial.print(wD);
     Serial.print("Motor D speed: ");
     Serial.println(motorDSpeed);
-
-    // Serial.print(", direction: ");
-    // Serial.println(motorADir ? "forward" : "backward");
-    // Serial.print("; Motor B speed: ");
-    // Serial.print(motorBSpeed);
-    // Serial.print(", direction: ");
-    // Serial.println(motorBDir ? "forward" : "backward");
-    // Serial.print("; Motor C speed: ");
-    // Serial.print(motorCSpeed);
-    // Serial.print(", direction: ");
-    // Serial.println(motorCDir ? "forward" : "backward");
-    // Serial.print("; Motor D speed: ");
-    // Serial.print(motorDSpeed);
-    // Serial.print(", direction: ");
-    // Serial.println(motorDDir ? "forward" : "backward");
 
   } else {Serial.println("Controle desconectado!");}
 }
