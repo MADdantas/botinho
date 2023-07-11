@@ -1,0 +1,39 @@
+name: Create PR from dev to merge/*
+permissions:
+  contents: write
+  pull-requests: write
+on:
+  push:
+    branches:
+      - 'release/*'
+env:
+  NEW_BRANCH: ${{ 'merge/' }}${{ github.ref_name }}
+  GITHUB_TOKEN: ${{ secrets.AUTOMATION_ACCESS_TOKEN }}
+jobs:
+  create-pr-to-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Creating new branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        with:
+          branch: 'refs/heads/${{ env.NEW_BRANCH }}'
+
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.ref_name }}
+      - run: |
+          git pull
+          git fetch origin ${{ env.NEW_BRANCH }}
+          git checkout ${{ env.NEW_BRANCH }}
+          git pull
+          git rebase ${{ github.ref_name }}
+          git push
+          
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@master
+        with:
+          destination_branch: 'main'
+          source_branch: '${{ env.NEW_BRANCH }}'
+          pr_title: "[Automation] ${{ github.ref_name }} into develop" # title of the PR
+          pr_body: 'Pr created by automation to run tests'
+          pr_assignee: ${{github.actor}}
