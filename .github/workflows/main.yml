@@ -20,20 +20,20 @@ jobs:
 
       - uses: actions/checkout@master
         with:
-            ref: ${{ github.ref_name }}
+          ref: ${{ github.ref_name }}
       - run: |
-          git config --global user.email "matheussdantas19@gmail.com"
-          git config --global user.name "MADdantas"
-          git fetch origin
+          git pull
+          git fetch origin ${{ env.NEW_BRANCH }}
           git checkout ${{ env.NEW_BRANCH }}
-          git rebase -X theirs origin/${{ github.ref_name }}
-          git push origin ${{ env.NEW_BRANCH }} --force-with-lease
+          git pull
+          git rebase ${{ github.ref_name }}
+          git push
           
       - name: Create Pull Request
         uses: repo-sync/pull-request@master
         with:
           destination_branch: 'main'
           source_branch: '${{ env.NEW_BRANCH }}'
-          pr_title: "[Automation] ${{ github.ref_name }} into develop" # title of the Pull request
+          pr_title: "[Automation] ${{ github.ref_name }} into develop" # title of the PR
           pr_body: 'Pr created by automation to run tests'
           pr_assignee: ${{github.actor}}
