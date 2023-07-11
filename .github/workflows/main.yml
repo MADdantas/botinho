@@ -34,6 +34,6 @@ jobs:
         with:
           destination_branch: 'main'
           source_branch: '${{ env.NEW_BRANCH }}'
-          pr_title: "[Automation] ${{ github.ref_name }} into develop" # title of the PR
+          pr_title: "[Automation] ${{ github.ref_name }} into develop" # title of the Pull request
           pr_body: 'Pr created by automation to run tests'
           pr_assignee: ${{github.actor}}
