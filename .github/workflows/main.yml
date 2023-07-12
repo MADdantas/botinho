@@ -20,8 +20,9 @@ jobs:
 
       - uses: actions/checkout@master
         with:
-          ref: ${{ github.ref_name }}
-      - run: |
+            ref: ${{ github.ref_name }}
+      - name: Fetching last changes
+        run: |
           git fetch origin
           git checkout ${{ env.NEW_BRANCH }}
           git rebase -X theirs origin/${{ github.ref_name }}
