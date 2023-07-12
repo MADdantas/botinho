@@ -89,7 +89,7 @@ void loop() {
     // int wC = (1/0.04)*(Vx + Vy - ((0.12+0.11)/2) * W);
     // int wD = (1/0.04)*(Vx - Vy - ((0.12+0.11)/2) * W);
 
-    // Wheel velocity for each wheel
+    // Velocidade das rodas pra cada roda
     int wA = (Vx + Vy - W);
     int wB = (Vx - Vy - W);
     int wC = (Vx - Vy + W);
